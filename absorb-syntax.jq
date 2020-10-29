@@ -12,4 +12,4 @@ def token_text:
   (.tokenKind | .text // $token_text[][.kind]),
   (.trailingTrivia[] | trivia_text);
 
-[.. | select(.tokenKind?) | token_text] | add
+[.. | select(.tokenKind?) | token_text] | add // empty
