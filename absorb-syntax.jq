@@ -9,7 +9,7 @@ def trivia_text:
 
 def token_text:
   (.leadingTrivia[] | trivia_text),
-  (.tokenKind | .text // $token_text[][.kind]),
+  (.tokenKind | .text // $token_text[][.kind]) // error,
   (.trailingTrivia[] | trivia_text);
 
 def tokens:
