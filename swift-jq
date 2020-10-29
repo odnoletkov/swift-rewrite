@@ -4,6 +4,12 @@ _=${1?missing path}
 
 file=${*: -1}
 
+# TODO: validate input strictly
+# TODO: improve error messages
+# TODO: -i inplace edit
+# TODO: --diff mode
+# TODO: --patch mode
+
 xcrun swiftc -frontend -emit-syntax "$file" |
 	jq "${@:1:$#-1}" |
 	./absorb-syntax.jq
