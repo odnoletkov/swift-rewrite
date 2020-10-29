@@ -1,0 +1,9 @@
+#!/bin/bash
+
+_=${1?missing path}
+
+file=${*: -1}
+
+xcrun swiftc -frontend -emit-syntax "$file" |
+	jq "${@:1:$#-1}" |
+	./absorb-syntax.jq
