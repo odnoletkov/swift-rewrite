@@ -6,7 +6,6 @@ file=${*: -1}
 
 # TODO: validate input strictly
 # TODO: improve error messages
-# TODO: simplify token_text
 # TODO: -i inplace edit
 # TODO: --diff mode
 # TODO: --patch mode (interactive)
