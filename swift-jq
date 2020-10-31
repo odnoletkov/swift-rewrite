@@ -6,9 +6,16 @@ file=${*: -1}
 
 # TODO: validate input strictly
 # TODO: improve error messages
+# TODO: simplify token_text
 # TODO: -i inplace edit
 # TODO: --diff mode
-# TODO: --patch mode
+# TODO: --patch mode (interactive)
+# TODO: --syntax output AST
+# TODO: accept multiple files
+# TODO: accept directory for recursive *.swift walk
+# TODO: walk CWD for no args
+# TODO: accept stdin
+# TODO: accept *.pbxproj:target
 
 xcrun swiftc -frontend -emit-syntax "$file" |
 	jq "${@:1:$#-1}" |
