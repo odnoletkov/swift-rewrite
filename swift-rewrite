@@ -16,6 +16,6 @@ file=${*: -1}
 # TODO: accept stdin
 # TODO: accept *.pbxproj:target
 
-xcrun swiftc -frontend -emit-syntax "$file" |
+swift -frontend -emit-syntax "$file" |
 	jq "${@:1:$#-1}" |
 	"$(dirname "$0")"/absorb-syntax.jq
