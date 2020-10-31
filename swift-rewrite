@@ -5,6 +5,7 @@ set -eo pipefail
 while [[ "$#" -gt 0 ]]; do
 	case $1 in
 		-i) output=inplace ;;
+		-p|--patch) output=patch ;;
 		*) break ;;
 	esac
 	shift
@@ -16,8 +17,6 @@ file=${*: -1}
 
 # TODO: validate input strictly
 # TODO: improve error messages
-# TODO: --diff mode
-# TODO: --patch mode (interactive)
 # TODO: --syntax output AST
 # TODO: accept multiple files
 # TODO: accept directory for recursive *.swift walk
@@ -36,6 +35,11 @@ case $output in
 		tmp=$(mktemp)
 		run "${@}" >"$tmp"
 		mv "$tmp" "$file"
+		;;
+	patch)
+		tmp=$(mktemp)
+		run "${@}" >"$tmp"
+		diff -u "$file" "$tmp"
 		;;
 	*)
 		run "${@}"
