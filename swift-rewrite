@@ -1,12 +1,21 @@
 #!/bin/bash
 
+set -eo pipefail
+
+while [[ "$#" -gt 0 ]]; do
+	case $1 in
+		-i) output=inplace ;;
+		*) break ;;
+	esac
+	shift
+done
+
 _=${1?missing path}
 
 file=${*: -1}
 
 # TODO: validate input strictly
 # TODO: improve error messages
-# TODO: -i inplace edit
 # TODO: --diff mode
 # TODO: --patch mode (interactive)
 # TODO: --syntax output AST
@@ -16,6 +25,19 @@ file=${*: -1}
 # TODO: accept stdin
 # TODO: accept *.pbxproj:target
 
-swift -frontend -emit-syntax "$file" |
-	jq "${@:1:$#-1}" |
-	"$(dirname "$0")"/absorb-syntax.jq
+run() {
+	swift -frontend -emit-syntax "$file" |
+		jq "${@:1:$#-1}" |
+		"$(dirname "$0")"/absorb-syntax.jq
+}
+
+case $output in
+	inplace)
+		tmp=$(mktemp)
+		run "${@}" >"$tmp"
+		mv "$tmp" "$file"
+		;;
+	*)
+		run "${@}"
+		;;
+esac
