@@ -39,7 +39,7 @@ case $output in
 	patch)
 		tmp=$(mktemp)
 		run "${@}" >"$tmp"
-		diff -u "$file" "$tmp"
+		diff -u --label "$file" --label "$file" "$file" "$tmp"
 		;;
 	*)
 		run "${@}"
