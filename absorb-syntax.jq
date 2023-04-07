@@ -1,15 +1,6 @@
 #!/usr/bin/env jq -jf
 
 {
-  Space: " ",
-  Tab: "\t",
-  Formfeed: "\f",
-  Newline: "\n",
-  CarriageReturn: "\r",
-  CarriageReturnLineFeed: "\r\n",
-} as $trivia_text |
-
-{
   eof: "",
   l_paren: "(",
   r_paren: ")",
@@ -41,17 +32,13 @@
   string_interpolation_anchor: ")",
 } as $token_text |
 
-def trivia_text:
-  (.value | strings) //
-  (reduce range(.value - 1) as $_ ([$trivia_text[.kind] // error]; . + .[:1]) | add);
-
 def ltrim($str):
   if startswith($str) then ltrimstr($str) else empty end;
 
 def token_text:
-  (.leadingTrivia[] | trivia_text),
+  .leadingTrivia,
   (.tokenKind | .text // (.kind | $token_text[.] // ltrim("kw_") // "#" + ltrim("pound_")) // error),
-  (.trailingTrivia[] | trivia_text);
+  .trailingTrivia;
 
 def tokens:
   if .layout then
